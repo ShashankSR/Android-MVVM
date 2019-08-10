@@ -3,11 +3,12 @@ package com.example.weather.di
 import com.example.weather.WeatherApplication
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = [NetworkModule::class]
+    modules = [AndroidSupportInjectionModule::class, NetworkModule::class]
 )
 interface AppComponent {
     @Component.Builder
