@@ -6,4 +6,5 @@
     <dimen name="textRegular">16sp</dimen>
     <dimen name="marginDefault">16dp</dimen>
     <dimen name="listItemPadding">20dp</dimen>
+    <dimen name="loader">96dp</dimen>
 </resources>
