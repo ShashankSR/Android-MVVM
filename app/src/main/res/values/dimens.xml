@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="textHeader">96sp</dimen>
+    <dimen name="errorHeader">54sp</dimen>
+    <dimen name="textSubHeader">36sp</dimen>
+    <dimen name="textRegular">16sp</dimen>
+    <dimen name="marginDefault">16dp</dimen>
+</resources>
