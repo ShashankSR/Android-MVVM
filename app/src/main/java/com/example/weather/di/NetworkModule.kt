@@ -2,7 +2,6 @@ package com.example.weather.di
 
 import dagger.Module
 import dagger.Provides
-import dagger.Reusable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.CallAdapter
@@ -24,13 +23,13 @@ abstract class NetworkModule {
         }
 
         @Provides
-        @Reusable
+        @JvmStatic
         fun providesGsonFactory(): Converter.Factory {
             return GsonConverterFactory.create()
         }
 
         @Provides
-        @Reusable
+        @JvmStatic
         fun providesCallAdapterFactory(): CallAdapter.Factory {
             return RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())
         }
@@ -44,6 +43,7 @@ abstract class NetworkModule {
             callAdapterFactory: CallAdapter.Factory
         ): Retrofit {
             return Retrofit.Builder()
+                .baseUrl("https://api.apixu.com/v1/")
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(callAdapterFactory)
                 .client(client)

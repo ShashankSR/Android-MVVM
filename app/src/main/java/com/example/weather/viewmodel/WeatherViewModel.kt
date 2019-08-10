@@ -2,8 +2,10 @@ package com.example.weather.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.example.weather.data.WeatherRepository
+import javax.inject.Inject
 
-class WeatherViewModel : ViewModel() {
+class WeatherViewModel @Inject constructor(val repository: WeatherRepository) : ViewModel() {
 
     data class CurrentViewObject(
         val currentTemp: String,
