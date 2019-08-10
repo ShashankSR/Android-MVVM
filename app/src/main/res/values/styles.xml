@@ -14,4 +14,28 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+
+    <style name="AppTheme.Text" parent="AppTheme">
+        <item name="android:textSize">@dimen/textRegular</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="AppTheme.Text.Header">
+        <item name="android:textSize">@dimen/textHeader</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Text.SubHeader">
+        <item name="android:textSize">@dimen/textSubHeader</item>
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
+    </style>
+
+    <style name="AppTheme.Text.Error">
+        <item name="android:textSize">@dimen/errorHeader</item>
+        <item name="android:textColor">@color/textPrimaryInverse</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
+    </style>
 </resources>
