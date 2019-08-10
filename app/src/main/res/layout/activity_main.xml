@@ -1,27 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout>
 
-    <include
-        android:layout="@layout/layout_main"
-        tools:visibility="visible"/>
+    <data>
+        <variable name="weatherViewModel" type="com.example.weather.viewmodel.WeatherViewModel"/>
+    </data>
 
-    <include
-        android:layout="@layout/layout_error"
-        tools:visibility="gone"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ImageView
-        style="@style/AppTheme.Loader"
-        android:contentDescription="@string/cd_progress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone"/>
+        <include
+            layout="@layout/layout_main"
+            android:visibility="@{weatherViewModel.networkVO.showSuccess}"
+            tools:visibility="visible"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            layout="@layout/layout_error"
+            android:visibility="@{weatherViewModel.networkVO.showError}"
+            tools:visibility="gone"/>
+
+        <ImageView
+            style="@style/AppTheme.Loader"
+            android:contentDescription="@string/cd_progress"
+            android:visibility="@{weatherViewModel.networkVO.showLoader}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

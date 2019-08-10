@@ -18,8 +18,7 @@ class WeatherViewModel : ViewModel() {
     data class NetworkViewObject(
         val showLoader: Int,
         val showError: Int,
-        val showSuccess: Int,
-        val errorMessage: Int
+        val showSuccess: Int
     )
 
     lateinit var networkVO: LiveData<NetworkViewObject>
