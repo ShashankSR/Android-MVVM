@@ -2,4 +2,5 @@
     <string name="app_name">Weather</string>
     <string name="btn_retry">Retry</string>
     <string name="error">Something went wrong at our end!</string>
+    <string name="cd_progress">Progress</string>
 </resources>
