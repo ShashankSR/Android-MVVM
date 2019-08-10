@@ -38,4 +38,9 @@
         <item name="android:textColor">@color/textPrimaryInverse</item>
         <item name="android:fontFamily">sans-serif-thin</item>
     </style>
+    <style name="AppTheme.Button">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:background">@color/buttonBg</item>
+        <item name="android:textColor">@color/textPrimaryInverse</item>
+    </style>
 </resources>
