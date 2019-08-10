@@ -9,4 +9,5 @@
     <color name="buttonBg">#4A4A4A</color>
     <color name="errorBg">#E85959</color>
     <color name="windowBg">#F5F6F7</color>
+    <color name="windowBgSecondary">#FFFFFF</color>
 </resources>
