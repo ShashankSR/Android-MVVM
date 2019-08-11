@@ -1,8 +1,12 @@
 package com.example.weather.viewmodel
 
+import android.view.View
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.weather.data.WeatherData
 import com.example.weather.data.WeatherRepository
+import io.reactivex.Single
 import javax.inject.Inject
 
 class WeatherViewModel @Inject constructor(val repository: WeatherRepository) : ViewModel() {
@@ -23,8 +27,16 @@ class WeatherViewModel @Inject constructor(val repository: WeatherRepository) : 
         val showSuccess: Int
     )
 
-    lateinit var networkVO: LiveData<NetworkViewObject>
+    private var _networkVO = MutableLiveData<NetworkViewObject>().apply {
+        value = NetworkViewObject(View.GONE, View.GONE, View.GONE)
+    }
+
+    val networkVO: LiveData<NetworkViewObject> = _networkVO
     lateinit var currentVO: LiveData<CurrentViewObject>
     lateinit var forecastVO: LiveData<List<ForecastViewObject>>
 
+    fun getForecast(location: String): Single<WeatherData> {
+        _networkVO.postValue(NetworkViewObject(View.VISIBLE, View.GONE, View.GONE))
+        return repository.getForecast(location)
+    }
 }
