@@ -29,7 +29,10 @@ class WeatherViewModel @Inject constructor(val repository: WeatherRepository) : 
         val showSuccess: Int
     )
 
-    private val _networkVO = MutableLiveData<NetworkViewObject>()
+    private val _networkVO = MutableLiveData<NetworkViewObject>().apply {
+        value = NetworkViewObject(View.GONE, View.GONE, View.GONE)
+    }
+
     private val _currentVO = MutableLiveData<CurrentViewObject>()
     private val _forecastVO = MutableLiveData<List<ForecastViewObject>>()
 
