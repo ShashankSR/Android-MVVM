@@ -3,6 +3,7 @@ package com.example.weather.view
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -34,8 +35,10 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
 
     lateinit var compositeDisposable: CompositeDisposable
     lateinit var loader: ImageView
+    lateinit var forecastView: View
     lateinit var locationString: String
     private lateinit var animation: Animation
+    private lateinit var slideInAnimation: Animation
 
     private val REQUEST_LOCATION = 99
 
@@ -64,8 +67,11 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
             }
             lifecycleOwner = this@MainActivity
             loader = imgLoader
-            animation = AnimationUtils.loadAnimation(baseContext, R.anim.rotation_infinite)
+            forecastView = layoutMain.cardView
         }
+
+        animation = AnimationUtils.loadAnimation(baseContext, R.anim.rotation_infinite)
+        slideInAnimation = AnimationUtils.loadAnimation(baseContext, R.anim.abc_slide_in_bottom)
 
         if (checkLocationPermission()) {
             LocationServices.getFusedLocationProviderClient(this).apply {
@@ -81,6 +87,7 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
     override fun onSuccess(data: WeatherData) {
         loader.clearAnimation()
         weatherViewModel.onSuccess(data)
+        forecastView.startAnimation(slideInAnimation)
     }
 
     override fun onSubscribe(d: Disposable) {
