@@ -10,6 +10,6 @@ interface WeatherApi {
     fun getForecast(
         @Query("key") string: String = BuildConfig.API_KEY,
         @Query("q") location: String = "Bengaluru",
-        @Query("days") days: Int = 4
+        @Query("days") days: Int = 5
     ): Single<WeatherData>
 }
