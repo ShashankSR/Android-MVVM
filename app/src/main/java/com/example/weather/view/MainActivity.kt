@@ -96,7 +96,9 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
     }
 
     override fun onStop() {
-        compositeDisposable.dispose()
+        if (this::compositeDisposable.isInitialized) {
+            compositeDisposable.dispose()
+        }
         super.onStop()
     }
 
