@@ -38,7 +38,7 @@ class WeatherViewModel @Inject constructor(val repository: WeatherRepository) : 
     val forecastVO: LiveData<List<ForecastViewObject>> = _forecastVO
 
     fun getForecast(location: String): Single<WeatherData> {
-        _networkVO.postValue(NetworkViewObject(View.VISIBLE, View.GONE, View.GONE))
+        _networkVO.value = NetworkViewObject(View.VISIBLE, View.GONE, View.GONE)
         return repository.getForecast(location)
     }
 

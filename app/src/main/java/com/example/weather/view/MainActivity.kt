@@ -42,13 +42,14 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
                 addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
             }
             layoutError.tvRetry.setOnClickListener {
-                this@MainActivity.weatherViewModel.getForecast("").subscribe(this@MainActivity)
+                this@MainActivity.weatherViewModel.getForecast("Bengaluru").subscribe(this@MainActivity)
             }
             weatherViewModel = this@MainActivity.weatherViewModel.apply {
                 forecastVO.observe(this@MainActivity, Observer {
                     forecastAdapter.updateData(it)
                 })
             }
+            lifecycleOwner = this@MainActivity
         }
 
         weatherViewModel.getForecast("").subscribe(this)
