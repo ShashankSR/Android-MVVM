@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
                 addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
             }
             layoutError.tvRetry.setOnClickListener {
-                this@MainActivity.weatherViewModel.getForecast(locationString).subscribe(this@MainActivity)
+                onRetryClicked()
             }
             weatherViewModel = this@MainActivity.weatherViewModel.apply {
                 forecastVO.observe(this@MainActivity, Observer {
@@ -73,15 +73,7 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
         animation = AnimationUtils.loadAnimation(baseContext, R.anim.rotation_infinite)
         slideInAnimation = AnimationUtils.loadAnimation(baseContext, R.anim.abc_slide_in_bottom)
 
-        if (checkLocationPermission()) {
-            LocationServices.getFusedLocationProviderClient(this).apply {
-                lastLocation.addOnSuccessListener { location ->
-                    locationString = "${location.latitude},${location.longitude}"
-                    weatherViewModel.getForecast(locationString).subscribe(this@MainActivity)
-                }
-            }
-        }
-
+        getDeviceLocation()
     }
 
     override fun onSuccess(data: WeatherData) {
@@ -109,9 +101,8 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
     }
 
 
-    private fun checkLocationPermission(): Boolean {
-        return if (
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+    private fun getDeviceLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
@@ -119,12 +110,25 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
                 arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
                 REQUEST_LOCATION
             )
-            false
         } else {
-            true
+            LocationServices.getFusedLocationProviderClient(this).apply {
+                lastLocation.addOnSuccessListener { location ->
+                    location?.let {
+                        locationString = "${location.latitude},${location.longitude}"
+                        weatherViewModel.getForecast(locationString).subscribe(this@MainActivity)
+                    } ?: weatherViewModel.onError()
+                }
+            }
         }
     }
 
+    private fun onRetryClicked() {
+        if (this::locationString.isInitialized) {
+            weatherViewModel.getForecast(locationString).subscribe(this)
+        } else {
+            getDeviceLocation()
+        }
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -133,20 +137,7 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
         when (requestCode) {
             REQUEST_LOCATION -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    if (ContextCompat.checkSelfPermission(
-                            this,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                        ) == PackageManager.PERMISSION_GRANTED
-                    ) {
-
-                        LocationServices.getFusedLocationProviderClient(this).apply {
-                            lastLocation.addOnSuccessListener { location ->
-                                locationString = "${location.latitude},${location.longitude}"
-                                weatherViewModel.getForecast(locationString).subscribe(this@MainActivity)
-                            }
-                        }
-                    }
+                    getDeviceLocation()
                 } else {
                     weatherViewModel.onError()
                 }
