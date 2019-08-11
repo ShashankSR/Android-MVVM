@@ -28,8 +28,10 @@
             tools:visibility="gone"/>
 
         <ImageView
+            android:id="@+id/img_loader"
             style="@style/AppTheme.Loader"
             android:contentDescription="@string/cd_progress"
+            android:src="@drawable/ic_loading"
             android:visibility="@{weatherViewModel.networkVO.showLoader}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

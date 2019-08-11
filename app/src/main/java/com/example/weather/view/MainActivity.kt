@@ -1,6 +1,9 @@
 package com.example.weather.view
 
 import android.os.Bundle
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -25,6 +28,8 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
     lateinit var weatherViewModel: WeatherViewModel
 
     lateinit var compositeDisposable: CompositeDisposable
+    lateinit var loader: ImageView
+    private lateinit var animation: Animation
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -50,16 +55,21 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
                 })
             }
             lifecycleOwner = this@MainActivity
+            loader = imgLoader
+            animation = AnimationUtils.loadAnimation(baseContext, R.anim.rotation_infinite)
+            loader.startAnimation(animation)
         }
 
         weatherViewModel.getForecast("").subscribe(this)
     }
 
     override fun onSuccess(data: WeatherData) {
+        loader.clearAnimation()
         weatherViewModel.onSuccess(data)
     }
 
     override fun onSubscribe(d: Disposable) {
+        loader.startAnimation(animation)
         if (!this@MainActivity::compositeDisposable.isInitialized) {
             compositeDisposable = CompositeDisposable()
         }
@@ -67,6 +77,7 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
     }
 
     override fun onError(e: Throwable) {
+        loader.clearAnimation()
         weatherViewModel.onError()
     }
 
