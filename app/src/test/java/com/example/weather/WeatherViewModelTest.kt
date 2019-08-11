@@ -7,7 +7,10 @@ import com.example.weather.data.WeatherRepository
 import com.example.weather.viewmodel.WeatherViewModel
 import com.google.gson.Gson
 import io.mockk.MockKAnnotations
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.verify
+import io.reactivex.Single
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -95,6 +98,16 @@ class WeatherViewModelTest {
             Gson().fromJson<WeatherData>(br, WeatherData::class.java)
         } catch (ignore: FileNotFoundException) {
             null
+        }
+    }
+
+    @Test
+    fun testApiCall() {
+        every { weatherRepository.getForecast(any()) } answers { Single.create({}) }
+
+        objectUnderTest.getForecast("Paris")
+        verify {
+            weatherRepository.getForecast("Paris")
         }
     }
 }
