@@ -47,11 +47,11 @@ class WeatherViewModel @Inject constructor(val repository: WeatherRepository) : 
 
     fun onSuccess(weatherData: WeatherData) {
         _currentVO.value = CurrentViewObject(
-            "${weatherData.current.temperature}\u00B0", weatherData.location.name
+            "${weatherData.current.temperature.toInt()}\u00B0", weatherData.location.name
         )
 
-        _forecastVO.value = weatherData.forecast.forecastDay.map {
-            ForecastViewObject("${it.day.avgTemperature} c", getDayFromDate(it.date))
+        _forecastVO.value = weatherData.forecast.forecastDay.subList(1, 5).map {
+            ForecastViewObject("${it.day.avgTemperature.toInt()} C", getDayFromDate(it.date))
         }
 
         _networkVO.value = NetworkViewObject(View.GONE, View.GONE, View.VISIBLE)
@@ -65,7 +65,7 @@ class WeatherViewModel @Inject constructor(val repository: WeatherRepository) : 
     private fun getDayFromDate(dateString: String): String {
         return try {
             SimpleDateFormat("EEEE", Locale.US).format(
-                SimpleDateFormat("YYYY-MM-DD", Locale.US).parse(dateString)!!
+                SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(dateString)!!
             )
         } catch (e: NullPointerException) {
             dateString
