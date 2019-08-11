@@ -60,6 +60,10 @@ class WeatherViewModel @Inject constructor(val repository: WeatherRepository) : 
 
     }
 
+    fun onError() {
+        _networkVO.postValue(NetworkViewObject(View.GONE, View.VISIBLE, View.GONE))
+    }
+
     private fun getDayFromDate(dateString: String): String {
         return try {
             SimpleDateFormat("EEEE", Locale.US).format(
