@@ -43,7 +43,7 @@ abstract class NetworkModule {
             callAdapterFactory: CallAdapter.Factory
         ): Retrofit {
             return Retrofit.Builder()
-                .baseUrl("https://api.apixu.com/v1/")
+                .baseUrl("https://api.apixu.com")
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(callAdapterFactory)
                 .client(client)

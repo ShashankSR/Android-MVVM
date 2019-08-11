@@ -6,10 +6,10 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface WeatherApi {
-    @GET("forecast.json")
+    @GET("/v1/forecast.json")
     fun getForecast(
         @Query("key") string: String = BuildConfig.API_KEY,
-        @Query("q") location: String = "Banglore",
+        @Query("q") location: String = "Bengaluru",
         @Query("days") days: Int = 4
     ): Single<WeatherData>
 }
