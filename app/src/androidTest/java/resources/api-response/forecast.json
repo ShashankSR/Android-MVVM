@@ -1,0 +1,75 @@
+{
+  "location": {
+    "name": "Paris",
+    "region": "Ile-de-France",
+    "country": "France",
+    "lat": 48.87,
+    "lon": 2.33,
+    "tz_id": "Europe/Paris",
+    "localtime_epoch": 1565513433,
+    "localtime": "2019-08-11 10:50"
+  },
+  "current": {
+    "last_updated": "2019-08-11 10:40",
+    "temp_c": 17.0,
+    "condition": {
+    },
+    "uv": 5.0
+  },
+  "forecast": {
+    "forecastday": [
+      {
+        "date": "2019-08-11",
+        "day": {
+          "avgtemp_c": 18.8,
+          "condition": {
+          }
+        },
+        "astro": {
+        }
+      },
+      {
+        "date": "2019-08-12",
+        "day": {
+          "avgtemp_c": 18.7,
+          "condition": {
+          }
+        },
+        "astro": {
+        }
+      },
+      {
+        "date": "2019-08-13",
+        "day": {
+          "avgtemp_c": 19.0,
+          "condition": {
+          }
+        },
+        "astro": {
+        }
+      },
+      {
+        "date": "2019-08-14",
+        "day": {
+          "avgtemp_c": 20.3,
+          "condition": {
+          }
+        },
+        "astro": {
+        }
+      },
+      {
+        "date": "2019-08-15",
+        "day": {
+          "avgtemp_c": 21.2,
+          "condition": {
+          }
+        },
+        "astro": {
+        }
+      }
+    ]
+  },
+  "alert": {
+  }
+}
