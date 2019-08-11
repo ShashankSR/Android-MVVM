@@ -29,10 +29,7 @@ class WeatherViewModel @Inject constructor(val repository: WeatherRepository) : 
         val showSuccess: Int
     )
 
-    private val _networkVO = MutableLiveData<NetworkViewObject>().apply {
-        value = NetworkViewObject(View.GONE, View.GONE, View.GONE)
-    }
-
+    private val _networkVO = MutableLiveData<NetworkViewObject>()
     private val _currentVO = MutableLiveData<CurrentViewObject>()
     private val _forecastVO = MutableLiveData<List<ForecastViewObject>>()
 
@@ -46,22 +43,20 @@ class WeatherViewModel @Inject constructor(val repository: WeatherRepository) : 
     }
 
     fun onSuccess(weatherData: WeatherData) {
-        _currentVO.postValue(
-            CurrentViewObject(
-                "${weatherData.current.temperature}\u00B0", weatherData.location.name
-            )
+        _currentVO.value = CurrentViewObject(
+            "${weatherData.current.temperature}\u00B0", weatherData.location.name
         )
-        _forecastVO.postValue(
-            weatherData.forecast.forecastDay.map {
-                ForecastViewObject("${it.day.avgTemperature} c", getDayFromDate(it.date))
-            }
-        )
-        _networkVO.postValue(NetworkViewObject(View.GONE, View.GONE, View.VISIBLE))
+
+        _forecastVO.value = weatherData.forecast.forecastDay.map {
+            ForecastViewObject("${it.day.avgTemperature} c", getDayFromDate(it.date))
+        }
+
+        _networkVO.value = NetworkViewObject(View.GONE, View.GONE, View.VISIBLE)
 
     }
 
     fun onError() {
-        _networkVO.postValue(NetworkViewObject(View.GONE, View.VISIBLE, View.GONE))
+        _networkVO.value = NetworkViewObject(View.GONE, View.VISIBLE, View.GONE)
     }
 
     private fun getDayFromDate(dateString: String): String {
