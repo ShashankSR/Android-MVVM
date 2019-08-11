@@ -72,7 +72,20 @@ class WeatherViewModelTest {
 
     @Test
     fun testOnError() {
-
+        var updateTimes = 0
+        objectUnderTest.networkVO.observeForever {
+            if (updateTimes == 0) {
+                assert(it.showError == View.GONE)
+                assert(it.showLoader == View.GONE)
+                assert(it.showSuccess == View.GONE)
+                updateTimes += 1
+            } else {
+                assert(it.showError == View.VISIBLE)
+                assert(it.showLoader == View.GONE)
+                assert(it.showSuccess == View.GONE)
+            }
+        }
+        objectUnderTest.onError()
     }
 
     private fun loadData(): WeatherData? {
