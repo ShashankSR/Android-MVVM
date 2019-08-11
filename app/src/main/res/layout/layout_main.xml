@@ -19,8 +19,9 @@
             style="@style/AppTheme.Text.Header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/marginDefault"
             android:text="@{weatherViewModel.currentVO.currentTemp}"
-            app:layout_constraintBottom_toTopOf="@+id/cardView"
+            app:layout_constraintBottom_toTopOf="@+id/tv_current_location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -31,12 +32,13 @@
             style="@style/AppTheme.Text.SubHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/marginDefault"
+            android:gravity="center"
             android:text="@{weatherViewModel.currentVO.currentLocation}"
             app:layout_constraintBottom_toTopOf="@+id/cardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_current_temp"
-            app:layout_constraintVertical_bias="0"
             tools:text="Banglore"/>
 
         <androidx.cardview.widget.CardView
@@ -52,7 +54,9 @@
                 android:id="@+id/rv_forecast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/marginDefault"
+                android:layout_marginLeft="@dimen/marginDefault"
+                android:layout_marginTop="@dimen/marginDefault"
+                android:layout_marginRight="@dimen/marginDefault"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="4"
                 tools:listitem="@layout/item_forecast"/>
