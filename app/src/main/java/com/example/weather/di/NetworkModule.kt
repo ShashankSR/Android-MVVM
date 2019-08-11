@@ -9,6 +9,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -40,10 +41,11 @@ abstract class NetworkModule {
         fun providePlusRetrofitClient(
             client: OkHttpClient,
             converterFactory: Converter.Factory,
-            callAdapterFactory: CallAdapter.Factory
+            callAdapterFactory: CallAdapter.Factory,
+            @Named("baseUrl") baseUrl: String
         ): Retrofit {
             return Retrofit.Builder()
-                .baseUrl("https://api.apixu.com")
+                .baseUrl(baseUrl)
                 .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(callAdapterFactory)
                 .client(client)

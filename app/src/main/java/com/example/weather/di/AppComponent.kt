@@ -4,6 +4,7 @@ import com.example.weather.WeatherApplication
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
@@ -17,6 +18,9 @@ interface AppComponent {
 
         @BindsInstance
         fun application(application: WeatherApplication): Builder
+
+        @BindsInstance
+        fun baseUrl(@Named("baseUrl") baseUrl: String): Builder
     }
 
     fun inject(application: WeatherApplication)
