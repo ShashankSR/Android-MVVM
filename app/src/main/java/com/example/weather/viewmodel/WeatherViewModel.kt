@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class WeatherViewModel @Inject constructor(val repository: WeatherRepository) : ViewModel() {
+class WeatherViewModel @Inject constructor(private val repository: WeatherRepository) : ViewModel() {
 
     data class CurrentViewObject(
         val currentTemp: String,
