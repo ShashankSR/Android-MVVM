@@ -2,6 +2,7 @@ package com.example.weather.view
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
@@ -19,6 +20,9 @@ import com.example.weather.data.WeatherData
 import com.example.weather.databinding.ActivityMainBinding
 import com.example.weather.utils.ViewModelFactory
 import com.example.weather.viewmodel.WeatherViewModel
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationListener
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import dagger.android.AndroidInjection
 import io.reactivex.SingleObserver
@@ -26,7 +30,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
+class MainActivity : AppCompatActivity(), SingleObserver<WeatherData>, LocationListener,
+    GoogleApiClient.ConnectionCallbacks {
+
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -39,13 +45,19 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
     lateinit var locationString: String
     private lateinit var animation: Animation
     private lateinit var slideInAnimation: Animation
-
+    private lateinit var mGoogleApiClient: GoogleApiClient
     private val REQUEST_LOCATION = 99
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+
+        mGoogleApiClient = GoogleApiClient.Builder(this)
+            .addApi(LocationServices.API)
+            .addConnectionCallbacks(this).build()
+        mGoogleApiClient.connect()
 
         weatherViewModel = ViewModelProviders.of(this, viewModelFactory).get(WeatherViewModel::class.java)
 
@@ -73,7 +85,7 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
         animation = AnimationUtils.loadAnimation(baseContext, R.anim.rotation_infinite)
         slideInAnimation = AnimationUtils.loadAnimation(baseContext, R.anim.abc_slide_in_bottom)
 
-        getDeviceLocation()
+
     }
 
     override fun onSuccess(data: WeatherData) {
@@ -104,23 +116,20 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
 
 
     private fun getDeviceLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 REQUEST_LOCATION
             )
         } else {
-            LocationServices.getFusedLocationProviderClient(this).apply {
-                lastLocation.addOnSuccessListener { location ->
-                    location?.let {
-                        locationString = "${location.latitude},${location.longitude}"
-                        weatherViewModel.getForecast(locationString).subscribe(this@MainActivity)
-                    } ?: weatherViewModel.onError()
-                }
-            }
+            val locationRequest = LocationRequest.create()
+            locationRequest.interval = 500.toLong()
+            locationRequest.fastestInterval = 100.toLong()
+            locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this)
         }
     }
 
@@ -132,10 +141,7 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>, grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
             REQUEST_LOCATION -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -146,4 +152,20 @@ class MainActivity : AppCompatActivity(), SingleObserver<WeatherData> {
             }
         }
     }
+
+
+    override fun onConnected(p0: Bundle?) {
+        getDeviceLocation()
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+
+    }
+
+    override fun onLocationChanged(location: Location) {
+        locationString = "${location.latitude},${location.longitude}"
+        weatherViewModel.getForecast(locationString).subscribe(this@MainActivity)
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this)
+    }
+
 }
