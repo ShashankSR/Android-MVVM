@@ -45,6 +45,7 @@ class WeatherActivityTest {
 
         webServer.setDispatcher(MockServerDispatcher().ErrorDispatcher())
         activityRule.launchActivity(Intent())
+        onView(isRoot()).perform(waitId(R.id.tv_error, 3000))
         Espresso.onView(withId(R.id.tv_error)).check(matches(isDisplayed()))
         Espresso.onView(withId(R.id.tv_retry)).check(matches(isDisplayed()))
 
