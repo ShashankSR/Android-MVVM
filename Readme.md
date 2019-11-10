@@ -1,6 +1,7 @@
 Weather Application
-
+Sample app using MVVM, dagger and Android test cases
 Fetches the temperature and forecast for the coming 4 days of current location.
+
 
 To build run
 
